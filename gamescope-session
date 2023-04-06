@@ -215,6 +215,9 @@ AIR_LIST="AIR:AIR Pro"
 # AOKZOE Devices
 AOK_LIST="AOKZOE A1 AR07"
 
+# -W 2560 -H 1600 devices
+DEVICE_W2560H1600_LIST="ONEXPLAYER 2 ARP23"
+
 if [[ ":$OXP_LIST:" =~ ":$DEVICENAME:"  ]]; then
     DEVICEORIENTATION="--force-orientation left"
 elif [[ ":$AIR_LIST:" =~ ":$DEVICENAME:"  ]]; then
@@ -223,9 +226,14 @@ elif [[ ":$AOK_LIST:" =~ ":$DEVICENAME:"  ]]; then
     DEVICEORIENTATION="--force-orientation left"
 fi
 
+if [[ ":$DEVICE_W2560H1600_LIST:" =~ ":$DEVICENAME:"  ]]; then
+    DEVICERESOLUTION="-W 2560 -H 1600"
+fi
+
 gamescope \
 	--generate-drm-mode fixed \
 	--xwayland-count 2 \
+	${DEVICERESOLUTION} \
 	-w 1280 -h 800 \
     ${DEVICEORIENTATION} \
 	--default-touch-mode 4 \
@@ -258,15 +266,15 @@ steamargs=("-steamos3" "-steampal" "-steamdeck" "-gamepadui")
 
 # steamargs+=("-steamfs")
 
-if [ "$(cat /sys/devices/virtual/dmi/id/product_name)" == "Jupiter 1" ]; then
-    (while true; do
-        /usr/lib/hwsupport/power-button-handler.py
-    done) &
-else
-    (while true; do
-        /usr/lib/holoiso-hwsupport/power-button-handler.py
-    done) &
-fi
+#if [ "$(cat /sys/devices/virtual/dmi/id/product_name)" == "Jupiter 1" ]; then
+#    (while true; do
+#        /usr/lib/hwsupport/power-button-handler.py
+#    done) &
+#else
+#    (while true; do
+#        /usr/lib/holoiso-hwsupport/power-button-handler.py
+#    done) &
+#fi
 
 short_session_tracker_file="/tmp/steamos-short-session-tracker"
 short_session_duration=60
